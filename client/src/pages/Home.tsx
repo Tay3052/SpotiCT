@@ -13,10 +13,10 @@ export const Home = () => {
   return (
     <MainDiv>
       <Center>
-        <Heading>Welcome To NextFy</Heading>
+        <Heading>Welcome To Music World</Heading>
       </Center>
       <Center>
-        <Button margin={"2rem 0 0 0"} onClick={handleLogin}>
+        <Button margin={"2rem 0"} onClick={handleLogin}>
           Get Started
         </Button>
       </Center>

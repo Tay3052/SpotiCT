@@ -12,12 +12,18 @@
   "dependencies": {
     "@emotion/react": "^11.13.0",
     "@emotion/styled": "^11.13.0",
-    "@mui/material": "^5.16.4",
+    "@mui/icons-material": "^5.16.5",
+    "@mui/material": "^5.16.5",
+    "@prisma/client": "^5.17.0",
+    "@supabase/auth-ui-react": "^0.4.7",
+    "@supabase/auth-ui-shared": "^0.1.8",
+    "@supabase/supabase-js": "^2.44.4",
     "@types/js-cookie": "^3.0.6",
     "@yamada-ui/react": "^1.4.5",
     "axios": "^1.7.2",
     "cors": "^2.8.5",
     "express": "^4.19.2",
+    "formik": "^2.4.6",
     "http-proxy-middleware": "^3.0.0",
     "js-cookies": "^1.0.4",
     "node-fetch": "^2.7.0",
@@ -25,7 +31,8 @@
     "react-dom": "^18.3.1",
     "react-router-dom": "^6.25.1",
     "styled-component": "^2.8.0",
-    "styled-components": "^6.1.12"
+    "styled-components": "^6.1.12",
+    "yup": "^1.4.0"
   },
   "devDependencies": {
     "@types/react": "^18.3.3",
