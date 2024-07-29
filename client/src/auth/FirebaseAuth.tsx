@@ -1,4 +1,3 @@
-// src/AuthService.js
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,

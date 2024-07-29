@@ -8,15 +8,18 @@ export const HeaderLayor = () => {
       <HeaderDiv>
         <Center>
           <Link to={"/"}>
-            <Heading size={"2xl"}>SpotiCT</Heading>
+            <Heading size={"4xl"}>SpotiCT</Heading>
           </Link>
         </Center>
         <Navibar>
-          <ul>
+          <NavUl>
             <li>
-              <Link></Link>
+              <Link to={"/signup"}>Sign Up</Link>
             </li>
-          </ul>
+            <li>
+              <Link to={"/signin"}>Sign In</Link>
+            </li>
+          </NavUl>
         </Navibar>
       </HeaderDiv>
 
@@ -27,7 +30,7 @@ export const HeaderLayor = () => {
 
 const HeaderDiv = styled.header`
   width: 100%;
-  height: 6rem;
+  height: 9rem;
   background-color: #bdb76b;
   color: #fff;
   padding: 10px 0;
@@ -46,5 +49,10 @@ const Navibar = styled.nav`
 `;
 const NavUl = styled.ul`
   display: flex;
-  list-style: none;
+  justify-content: flex-end;
+  align-items: center;
+  font-size: 1.2rem;
+  & li {
+    margin-left: 20px;
+  }
 `;

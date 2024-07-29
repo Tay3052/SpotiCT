@@ -1,14 +1,9 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import {
-  Button,
-  Heading,
-  Input,
-  Center,
-  Select,
-  Option,
-} from "@yamada-ui/react";
+import { Button, Heading, Input, Center } from "@yamada-ui/react";
 import { registerWithEmailAndPassword } from "../auth/FirebaseAuth";
+import { useNavigate } from "react-router-dom";
+import { createUser } from "../database/addUserInfo";
 
 export const SignUp: React.FC = () => {
   const [email, setEmail] = useState<string>("");
@@ -16,9 +11,10 @@ export const SignUp: React.FC = () => {
   const [password2, setPassword2] = useState<string>("");
   const [username, setUsername] = useState<string>("");
   const [age, setAge] = useState<number>(0);
-  const [gender, setGender] = useState<string>("男");
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
+
+  const navigate = useNavigate();
 
   const handleSignUp = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault(); // デフォルトのフォーム送信動作を防ぐ
@@ -38,7 +34,23 @@ export const SignUp: React.FC = () => {
     }
 
     try {
-      await registerWithEmailAndPassword(email, password);
+      const userInfo = await registerWithEmailAndPassword(email, password);
+      const detail = {
+        id: userInfo.uid,
+        email: email,
+        username: username,
+        age: age,
+        createdAt: new Date(),
+      };
+      await createUser(detail);
+      console.log("User info created:", detail);
+
+      setUsername("");
+      setEmail("");
+      setPassword("");
+      setPassword2("");
+      setAge(0);
+      navigate("/");
     } catch (e) {
       if (e instanceof Error) {
         setError(e.message);
@@ -64,6 +76,7 @@ export const SignUp: React.FC = () => {
           placeholder="UserName"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
+          required={true}
         />
         <label htmlFor="email">メールアドレス</label>
         <InputForm
@@ -72,6 +85,7 @@ export const SignUp: React.FC = () => {
           placeholder="Email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
+          required={true}
         />
         <label htmlFor="password">パスワード</label>
         <InputForm
@@ -80,6 +94,7 @@ export const SignUp: React.FC = () => {
           placeholder="Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
+          required={true}
         />
         <label htmlFor="password2">パスワード確認</label>
         <InputForm
@@ -88,6 +103,7 @@ export const SignUp: React.FC = () => {
           placeholder="Password Config"
           value={password2}
           onChange={(e) => setPassword2(e.target.value)}
+          required={true}
         />
         <label htmlFor="age">年齢</label>
         <InputForm
@@ -98,18 +114,8 @@ export const SignUp: React.FC = () => {
           onChange={(e) =>
             setAge(e.target.value !== "" ? parseInt(e.target.value) : 0)
           }
+          required={true}
         />
-        <label htmlFor="gender">性別</label>
-        <Select
-          placeholder="性別を選択"
-          name="gender"
-          value={gender}
-          onChange={setGender}
-          style={{ margin: "0 0 20px 0" }}>
-          <Option value="男">Man</Option>
-          <Option value="女">Woman</Option>
-          <Option value="その他">Other</Option>
-        </Select>
         <Center>
           <Button type="submit" disabled={loading}>
             {loading ? "Signing In..." : "SIgn Up"}
