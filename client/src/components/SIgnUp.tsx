@@ -1,5 +1,4 @@
-import React, { useState, useRef } from "react";
-import { supabase } from "../api/supabase/SupabaseClient";
+import React, { useState } from "react";
 import styled from "styled-components";
 import {
   Button,
@@ -9,6 +8,7 @@ import {
   Select,
   Option,
 } from "@yamada-ui/react";
+import { registerWithEmailAndPassword } from "../auth/FirebaseAuth";
 
 export const SignUp: React.FC = () => {
   const [email, setEmail] = useState<string>("");
@@ -19,8 +19,6 @@ export const SignUp: React.FC = () => {
   const [gender, setGender] = useState<string>("男");
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
-
-  const formRef = useRef<HTMLFormElement>(null);
 
   const handleSignUp = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault(); // デフォルトのフォーム送信動作を防ぐ
@@ -40,39 +38,13 @@ export const SignUp: React.FC = () => {
     }
 
     try {
-      const { data, error: authError } = await supabase.auth.signUp({
-        email,
-        password,
-      });
-
-      if (authError) {
-        throw new Error(authError.message);
+      await registerWithEmailAndPassword(email, password);
+    } catch (e) {
+      if (e instanceof Error) {
+        setError(e.message);
+      } else {
+        setError("不明なエラーが発生しました");
       }
-
-      // Userテーブルにユーザー情報を追加
-      if (data) {
-        const { error: dbError } = await supabase
-          .from("Users")
-          .insert([
-            {
-              authId: data.user?.id,
-              name: username,
-              email: email,
-              age: age,
-              gender: gender,
-            },
-          ])
-          .select();
-
-        if (dbError) {
-          throw new Error(`データベースエラー: ${dbError.message}`);
-        }
-
-        console.log("ユーザーテーブルが正常に更新されました");
-        // サインアップ後の処理をここで実行（例: ログインページへのリダイレクトや確認メッセージの表示）
-      }
-    } catch (error) {
-      setError(error as string);
     } finally {
       setLoading(false);
     }
