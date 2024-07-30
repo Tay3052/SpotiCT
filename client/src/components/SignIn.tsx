@@ -35,7 +35,7 @@ export const SignIn = () => {
   return (
     <SignInContainer>
       <Center>
-        <Heading>Sign In</Heading>
+        <Heading style={{ margin: "0 0 20px 0" }}>Sign In</Heading>
       </Center>
 
       <form onSubmit={handleSignIn}>
@@ -44,6 +44,7 @@ export const SignIn = () => {
           type="email"
           id="email"
           value={email}
+          placeholder="Email"
           onChange={(e) => setEmail(e.target.value)}
         />
 
@@ -52,12 +53,15 @@ export const SignIn = () => {
           type="password"
           id="password"
           value={password}
+          placeholder="Password"
           onChange={(e) => setPassword(e.target.value)}
         />
+        <Center>
+          <Button type="submit" disabled={loading}>
+            {loading ? "Loading..." : "Sign In"}
+          </Button>
+        </Center>
 
-        <Button type="submit" disabled={loading}>
-          {loading ? "Loading..." : "Sign In"}
-        </Button>
         {error && <ErrorMessage>{error}</ErrorMessage>}
       </form>
     </SignInContainer>
