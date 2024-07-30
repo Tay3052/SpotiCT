@@ -118,7 +118,7 @@ export const SignUp: React.FC = () => {
         />
         <Center>
           <Button type="submit" disabled={loading}>
-            {loading ? "Signing In..." : "SIgn Up"}
+            {loading ? "Signing In..." : "Sign Up"}
           </Button>
         </Center>
       </form>

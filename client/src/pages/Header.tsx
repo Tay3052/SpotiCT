@@ -2,22 +2,26 @@ import { Center, Heading } from "@yamada-ui/react";
 import styled from "styled-components";
 import { Outlet } from "react-router-dom";
 import { Link } from "react-router-dom";
+import { LogOut } from "../components/LogOut";
 export const HeaderLayor = () => {
   return (
     <>
       <HeaderDiv>
         <Center>
           <Link to={"/"}>
-            <Heading size={"4xl"}>SpotiCT</Heading>
+            <Heading size={"3xl"}>SpotiCT</Heading>
           </Link>
         </Center>
         <Navibar>
           <NavUl>
             <li>
-              <Link to={"/signup"}>Sign Up</Link>
+              <Link to={"/signup"}>SignUp</Link>
             </li>
             <li>
-              <Link to={"/signin"}>Sign In</Link>
+              <Link to={"/signin"}>SignIn</Link>
+            </li>
+            <li>
+              <LogOut />
             </li>
           </NavUl>
         </Navibar>
@@ -30,7 +34,7 @@ export const HeaderLayor = () => {
 
 const HeaderDiv = styled.header`
   width: 100%;
-  height: 9rem;
+  height: 8rem;
   background-color: #bdb76b;
   color: #fff;
   padding: 10px 0;
