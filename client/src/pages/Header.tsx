@@ -1,15 +1,16 @@
-import { Center, Heading } from "@yamada-ui/react";
+import { Center, Image } from "@yamada-ui/react";
 import styled from "styled-components";
 import { Outlet } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { LogOut } from "../components/LogOut";
+import Logo from "../assets/img/logo.png";
 export const HeaderLayor = () => {
   return (
     <>
       <HeaderDiv>
         <Center>
           <Link to={"/"}>
-            <Heading size={"3xl"}>SpotiCT</Heading>
+            <Image src={Logo} style={{ height: "5rem" }}></Image>
           </Link>
         </Center>
         <Navibar>

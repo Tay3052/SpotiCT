@@ -32,7 +32,7 @@ app.get("/search", async (req, res) => {
   }
 });
 
-app.get("/albums/:id", async (req, res) => {
+app.get("/detail/:id", async (req, res) => {
   const { id } = req.params;
   const token = req.headers.authorization;
 
@@ -51,6 +51,27 @@ app.get("/albums/:id", async (req, res) => {
     res.json(data);
   } catch (error) {
     res.status(500).json({ error: error.message });
+    console.log(error);
+  }
+});
+
+app.get("/tracks/:id", async (req, res) => {
+  const { id } = req.params;
+  const token = req.headers.authorization;
+
+  try {
+    const response = await fetch(`https://api.spotify.com/v1/tracks/${id}`, {
+      headers: {
+        Authorization: token,
+      },
+    });
+
+    console.log(`Spotify API response: ${response.status}`);
+    const data = await response.json();
+    res.json(data);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+    console.log(error);
   }
 });
 

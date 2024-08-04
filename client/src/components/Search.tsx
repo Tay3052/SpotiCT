@@ -7,9 +7,11 @@ import {
   Pagination,
   Text,
   Heading,
+  Box,
 } from "@yamada-ui/react";
 import { Track } from "../interfaces/interface";
 import { Link } from "react-router-dom";
+import { SearchApi } from "../api/fetch/getMusicInfo";
 
 export const Search = () => {
   const [query, setQuery] = useState("");
@@ -28,19 +30,10 @@ export const Search = () => {
     const newOffset = (page - 1) * 10;
 
     try {
-      const response = await fetch(
-        `http://localhost:5001/search?q=${encodeURIComponent(
-          query
-        )}&type=track&offset=${newOffset}&limit=10`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      console.log("Response status:", response);
-      if (!response.ok) {
-        const errorData = await response.json();
+      const data = await SearchApi(query, newOffset);
+      console.log("Response status:", data.status);
+      if (!data) {
+        const errorData = data;
         if (errorData.error.status === 401) {
           console.error("Invalid token, redirecting to login");
         } else {
@@ -49,7 +42,7 @@ export const Search = () => {
           );
         }
       }
-      const data = await response.json();
+
       console.log("Search results:", data);
       setResults(data.tracks.items);
       setTotal(data.tracks.total);
@@ -60,16 +53,16 @@ export const Search = () => {
   };
 
   return (
-    <MainDiv>
+    <>
       <Center>
         <Input
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder="Search for a track"
           width={"50%"}
-          margin={"0 0 20px 0"}
+          margin={"20px 0"}
         />
-        <Button margin={"0 0 20px 0"} onClick={() => handleSearch(1)}>
+        <Button margin={"20px 0"} onClick={() => handleSearch(1)}>
           Search
         </Button>
       </Center>
@@ -83,15 +76,17 @@ export const Search = () => {
                 width={200}
                 height={200}
               />
-              <Text margin={"0 0 0 40px"}>
+              <Box style={{ margin: "0 0 0 40px" }}>
                 <Link to={`/detail/${track.id}`}>
                   <Heading>{track.name}</Heading>
                 </Link>
-                アーティスト名：
-                {track.artists
-                  .map((artist: { name: string }) => artist.name)
-                  .join(", ")}
-              </Text>
+                <Text>
+                  アーティスト名：
+                  {track.artists
+                    .map((artist: { name: string }) => artist.name)
+                    .join(", ")}
+                </Text>
+              </Box>
             </MusicDiv>
           ))}
         </Results>
@@ -102,18 +97,12 @@ export const Search = () => {
           page={offset / 10 + 1}
           total={Math.ceil(total / 10)}
           onChange={(page) => handleSearch(page)}
-          style={{ marginTop: "40px" }}
+          style={{ margin: "40px 0" }}
         />
       </Center>
-    </MainDiv>
+    </>
   );
 };
-
-const MainDiv = styled.main`
-  width: 100%;
-  height: 100%;
-  padding: 20px;
-`;
 
 const Results = styled.div`
   display: flex;
