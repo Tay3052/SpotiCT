@@ -22,7 +22,6 @@ export const Callback = () => {
       const expiryTime = new Date().getTime() + Number(expiresIn) * 1000;
       localStorage.setItem("token", token);
       localStorage.setItem("expiryTime", expiryTime.toString());
-      console.log("Token saved:", token); // トークンが正しく保存されているか確認
       navigate("/search"); // 検索ページにリダイレクト
     }
   }, [navigate]);
