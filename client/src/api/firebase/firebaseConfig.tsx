@@ -8,13 +8,13 @@ import { getFirestore } from "firebase/firestore";
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: "AIzaSyCnOFS3hhF5qRudUt7qGDp-jYgLBLjuFbU",
-  authDomain: "spotict-6d1c3.firebaseapp.com",
-  projectId: "spotict-6d1c3",
-  storageBucket: "spotict-6d1c3.appspot.com",
-  messagingSenderId: "913159017287",
-  appId: "1:913159017287:web:e087e64e08e471a47cf262",
-  measurementId: "G-QXBKVHXW0K",
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID,
+  measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID,
 };
 
 // Initialize Firebase
