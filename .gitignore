@@ -9,7 +9,8 @@ firebase-debug.*.log*
 
 # Firebase cache
 *.firebase
-/firebase/*
+/client/src/api/firebase/
+
 
 # Firebase config
 
