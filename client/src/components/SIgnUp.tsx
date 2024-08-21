@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { Button, Heading, Input, Center } from "@yamada-ui/react";
 import { registerWithEmailAndPassword } from "../auth/FirebaseAuth";
 import { useNavigate } from "react-router-dom";
-import { createUser } from "../database/addUserInfo";
+import { createUser } from "../database/userInfo";
 
 export const SignUp: React.FC = () => {
   const [email, setEmail] = useState<string>("");

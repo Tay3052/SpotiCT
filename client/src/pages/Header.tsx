@@ -4,7 +4,11 @@ import { Outlet } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { LogOut } from "../components/LogOut";
 import Logo from "../assets/img/logo.png";
+// import { useState } from "react";
+
 export const HeaderLayor = () => {
+  // const [isLogin, setIsLogin] = useState<boolean>(false);
+
   return (
     <>
       <HeaderDiv>
@@ -44,7 +48,7 @@ const HeaderDiv = styled.header`
 
 const Navibar = styled.nav`
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
   align-items: center;
   padding: 0 20px;
   & ul {

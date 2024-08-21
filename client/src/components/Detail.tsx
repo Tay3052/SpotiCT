@@ -6,14 +6,28 @@ import { Text, Heading, Center, Box } from "@yamada-ui/react";
 import { TrackData, TrackInfos } from "../interfaces/database/dbInterface";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import { addData, deleteData, getData } from "../database/dbFunc";
+import { getCookieSession } from "../auth/Session";
 
 export const Detail: React.FC = () => {
   const { id } = useParams<{ id: string | undefined }>();
   const [data, setData] = useState<TrackData>();
   const [infos, setInfos] = useState<TrackInfos>();
   const [isFavorite, setIsFavorite] = useState<boolean>(false);
+  const [changeID, setChangeID] = useState<string[]>([]);
+
+  const uidToken = getCookieSession("uid");
 
   useEffect(() => {
+    const handleFavorite = async () => {
+      const favorite = await getData("favorite", "id", "==", id ?? "");
+      const favoriteID = favorite.map((doc) => doc.user_id);
+      if (favoriteID.includes(uidToken)) {
+        setIsFavorite(true);
+      }
+      console.log(favoriteID);
+    };
+
     const fetchData = async () => {
       const data = await GetMusicInfo(id);
       setData(data);
@@ -24,10 +38,27 @@ export const Detail: React.FC = () => {
     };
     fetchData();
     fetchTrack();
-  }, [id]);
+    handleFavorite();
+  }, [id, uidToken]);
 
-  console.log(infos);
-  console.log(data);
+  const handleFavorite = async () => {
+    if (!isFavorite) {
+      setIsFavorite(true);
+      const addFavorite = await addData("favorite", {
+        id: id,
+        user_id: uidToken,
+        name: infos?.name,
+        description: infos?.album.name,
+        createdAt: new Date(),
+      });
+      setChangeID((infos?.name, [...changeID, addFavorite.id]));
+    } else {
+      setIsFavorite(false);
+      for (let i = 0; i < changeID.length; i++) {
+        if (changeID) await deleteData("favorite", changeID[i]);
+      }
+    }
+  };
 
   return (
     <>
@@ -70,20 +101,25 @@ export const Detail: React.FC = () => {
                     style={{ margin: "0 20px 0 0" }}>
                     <Text fontSize={"2xl"}>Spotifyで聴く</Text>
                   </a>
-                  {isFavorite ? (
-                    <FavoriteIcon
-                      onClick={() => setIsFavorite(false)}
-                      style={{ color: "red", cursor: "pointer" }}
-                    />
-                  ) : (
-                    <FavoriteBorderIcon
-                      onClick={() => setIsFavorite(true)}
-                      style={{ color: "red", cursor: "pointer" }}
-                    />
-                  )}
+                  <button onClick={handleFavorite}>
+                    {isFavorite ? (
+                      <FavoriteIcon
+                        style={{ color: "red", cursor: "pointer" }}
+                      />
+                    ) : (
+                      <FavoriteBorderIcon
+                        style={{ color: "red", cursor: "pointer" }}
+                      />
+                    )}
+                  </button>
                 </SpotifyBox>
               </Box>
             </DetailBox>
+          </Center>
+          <Center>
+            <Text fontSize={"2xl"} style={{ margin: "0 0 20px 0" }}>
+              パラメータ一覧
+            </Text>
           </Center>
           <Center>
             <DetailUl>
