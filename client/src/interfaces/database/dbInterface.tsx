@@ -1,3 +1,11 @@
+export interface Favorite {
+  id: string | undefined;
+  user_id: string | undefined;
+  name: string | undefined;
+  description: string | undefined;
+  createdAt: Date;
+}
+
 export interface User {
   id: string;
   username: string;

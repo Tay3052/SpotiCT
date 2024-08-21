@@ -1,26 +1,42 @@
 import { loginWithEmailAndPassword } from "../auth/FirebaseAuth";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import styled from "styled-components";
 import { Input, Heading, Center, Button } from "@yamada-ui/react";
 import { useNavigate } from "react-router-dom";
+import { getData } from "../database/dbFunc";
+import { setCookieSession } from "../auth/Session";
 
 export const SignIn = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
+  const [data, setData] = useState<{ id: string }[]>([]);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const data = await getData("users", "email", "==", email);
+      setData(data);
+    };
+
+    fetchData();
+  }, [email]);
+
   const handleSignIn = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault(); // デフォルトのフォーム送信動作を防ぐ
-
     setLoading(true);
     setError(null);
 
     try {
-      await loginWithEmailAndPassword(email, password);
-      setEmail("");
-      setPassword("");
-      navigate("/");
+      const login = await loginWithEmailAndPassword(email, password);
+      if (login.uid === data[0].id) {
+        setCookieSession("uid", login.uid);
+      } else {
+        setError("ユーザーが存在しません");
+      }
+      console.log(login);
+      console.log(data);
     } catch (e) {
       if (e instanceof Error) {
         setError(e.message);
@@ -29,6 +45,9 @@ export const SignIn = () => {
       }
     } finally {
       setLoading(false);
+      setEmail("");
+      setPassword("");
+      navigate("/");
     }
   };
 
