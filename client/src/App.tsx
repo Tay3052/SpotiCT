@@ -6,6 +6,7 @@ import { SearchPage } from "./pages/Search";
 import { SignupPage } from "./pages/SignupPage";
 import { SigninPage } from "./pages/SigninPage";
 import { DetailPage } from "./pages/DetailPage";
+import { Favorite } from "./pages/Favorite";
 function App() {
   return (
     <>
@@ -16,6 +17,7 @@ function App() {
             <Route path="/callback" element={<Callback />} />
             <Route path="/search" element={<SearchPage />} />
             <Route path="/detail/:id" element={<DetailPage />} />
+            <Route path="/favorite" element={<Favorite />} />
             <Route path="/signup" element={<SignupPage />} />
             <Route path="/signin" element={<SigninPage />} />
           </Route>

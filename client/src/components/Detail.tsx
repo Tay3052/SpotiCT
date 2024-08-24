@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
-import { GetMusicInfo, GetTrack } from "../api/fetch/getMusicInfo";
+import { GetTrack } from "../fetch/getMusicInfo";
 import { Text, Heading, Center, Box } from "@yamada-ui/react";
-import { TrackData, TrackInfos } from "../interfaces/database/dbInterface";
+import { TrackInfos } from "../interfaces/database/dbInterface";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import { addData, deleteData, getData } from "../database/dbFunc";
 import { getCookieSession } from "../auth/Session";
+import { Param } from "./Param";
 
 export const Detail: React.FC = () => {
   const { id } = useParams<{ id: string | undefined }>();
-  const [data, setData] = useState<TrackData>();
   const [infos, setInfos] = useState<TrackInfos>();
   const [isFavorite, setIsFavorite] = useState<boolean>(false);
   const [changeID, setChangeID] = useState<string[]>([]);
@@ -28,15 +28,10 @@ export const Detail: React.FC = () => {
       console.log(favoriteID);
     };
 
-    const fetchData = async () => {
-      const data = await GetMusicInfo(id);
-      setData(data);
-    };
     const fetchTrack = async () => {
       const infos = await GetTrack(id);
       setInfos(infos);
     };
-    fetchData();
     fetchTrack();
     handleFavorite();
   }, [id, uidToken]);
@@ -44,6 +39,7 @@ export const Detail: React.FC = () => {
   const handleFavorite = async () => {
     if (!isFavorite) {
       setIsFavorite(true);
+      if (!uidToken) return;
       const addFavorite = await addData("favorite", {
         id: id,
         user_id: uidToken,
@@ -116,35 +112,7 @@ export const Detail: React.FC = () => {
               </Box>
             </DetailBox>
           </Center>
-          <Center>
-            <Text fontSize={"2xl"} style={{ margin: "0 0 20px 0" }}>
-              パラメータ一覧
-            </Text>
-          </Center>
-          <Center>
-            <DetailUl>
-              <li>
-                <Text fontSize={"2xl"} margin={"0 40px 0 0"}>
-                  Key：{data?.key}
-                </Text>
-              </li>
-              <li>
-                <Text fontSize={"2xl"} margin={"0 40px 0 0"}>
-                  Tempo：{data?.tempo}BPM
-                </Text>
-              </li>
-              <li>
-                <Text fontSize={"2xl"} margin={"0 40px 0 0"}>
-                  Energy：{data?.energy}
-                </Text>
-              </li>
-              <li>
-                <Text fontSize={"2xl"} margin={"0 40px 0 0"}>
-                  Danceability：{data?.danceability}
-                </Text>
-              </li>
-            </DetailUl>
-          </Center>
+          <Param id={id ?? ""} />
         </DetailContainer>
       </Box>
     </>
@@ -165,12 +133,6 @@ const DetailBox = styled.div`
   display: flex;
   justify-content: center;
   margin: 0 0 40px 0;
-`;
-
-const DetailUl = styled.ul`
-  display: flex;
-  justify-content: center;
-  color: red;
 `;
 
 const SpotifyBox = styled(Box)`

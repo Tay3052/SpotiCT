@@ -11,7 +11,7 @@ import {
 } from "@yamada-ui/react";
 import { Track } from "../interfaces/interface";
 import { Link } from "react-router-dom";
-import { SearchApi } from "../api/fetch/getMusicInfo";
+import { SearchApi } from "../fetch/getMusicInfo";
 
 export const Search = () => {
   const [query, setQuery] = useState("");
