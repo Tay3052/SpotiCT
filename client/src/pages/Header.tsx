@@ -4,10 +4,18 @@ import { Outlet } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { LogOut } from "../components/LogOut";
 import Logo from "../assets/img/logo.png";
-// import { useState } from "react";
+import { useEffect, useState } from "react";
+import Cookies from "js-cookie";
 
 export const HeaderLayor = () => {
-  // const [isLogin, setIsLogin] = useState<boolean>(false);
+  const [isLogin, setIsLogin] = useState<boolean>(false);
+
+  useEffect(() => {
+    const uid = Cookies.get("uid");
+    if (uid) {
+      setIsLogin(true);
+    }
+  }, []);
 
   return (
     <>
@@ -22,12 +30,20 @@ export const HeaderLayor = () => {
             <li>
               <Link to={"/signup"}>SignUp</Link>
             </li>
-            <li>
-              <Link to={"/signin"}>SignIn</Link>
-            </li>
-            <li>
-              <LogOut />
-            </li>
+            {isLogin ? (
+              <>
+                <li>
+                  <Link to={"/favorite"}>Favorite</Link>
+                </li>
+                <li>
+                  <LogOut />
+                </li>
+              </>
+            ) : (
+              <li>
+                <Link to={"/signin"}>SignIn</Link>
+              </li>
+            )}
           </NavUl>
         </Navibar>
       </HeaderDiv>

@@ -16,3 +16,7 @@ export type Track = {
   artists: Artist[];
   id: string;
 };
+
+export type FavoriteList = {
+  track: Track;
+};

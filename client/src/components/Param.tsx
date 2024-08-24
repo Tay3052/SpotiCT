@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Center, Text } from "@yamada-ui/react";
 import styled from "styled-components";
-import { GetMusicInfo } from "../api/fetch/getMusicInfo";
+import { GetMusicInfo } from "../fetch/getMusicInfo";
 import { Box } from "@yamada-ui/react";
 import { TrackData } from "../interfaces/database/dbInterface";
 

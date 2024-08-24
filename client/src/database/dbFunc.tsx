@@ -44,7 +44,7 @@ export const getData = async (
     const querySnapshot = await getDocs(q);
     const data = querySnapshot.docs.map((doc) => ({
       id: doc.id,
-      user_id: doc.data().user_id,
+      user_id: doc.data().user_id ?? "",
       ...doc.data(),
     }));
     return data;
